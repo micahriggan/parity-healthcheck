@@ -3,6 +3,7 @@ const Web3 = require('web3');
 const utils = require('util');
 const wait = utils.promisify(setTimeout);
 const config = require('./config');
+const fiveMinutes = 1000 * 60 * 5;
 let lastRestart;
 
 if(!config) {
@@ -33,7 +34,6 @@ async function checkWsHealth() {
     lastSawTime = Date.now();
   });
 
-  const fiveMinutes = 1000 * 60 * 5;
   while(Date.now() < lastSawTime + fiveMinutes) {
     if(!lastBlock) {
       console.log("Waiting for a block");
@@ -46,18 +46,21 @@ async function checkWsHealth() {
 }
 
 async function main() {
-  let healthChecks = [];
-  if(config.wsPort && config.detect.websocketsStuck) {
-    healthChecks.push(checkWsHealth());
-  }
-
-  try {
-    await Promise.all(healthChecks);
-  } catch(e) {
-    if(config.restartOnIssue) {
-      console.error(e);
-      console.log("Issue detected, restarting parity");
+  while(true) {
+    let healthChecks = [];
+    if(config.wsPort && config.detect.websocketsStuck) {
+      healthChecks.push(checkWsHealth());
     }
+
+    try {
+      await Promise.all(healthChecks);
+    } catch(e) {
+      if(config.restartOnIssue) {
+        console.error(e);
+        console.log("Issue detected, restarting parity");
+      }
+    }
+    await wait(fiveMinutes);
   }
 }
 
