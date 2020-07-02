@@ -1,7 +1,7 @@
-const stuckTip = require('./stuckTip');
+const notSyncing = require('./notSyncing');
 const websocketHealth = require('./websocketHealth');
 
 module.exports = [
-  stuckTip,
+  notSyncing,
   websocketHealth
 ];

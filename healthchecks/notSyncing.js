@@ -4,7 +4,7 @@ const fiveMinutes = 1000 * 60 * 5;
 const utils = require('util');
 const wait = utils.promisify(setTimeout);
 
-async function checkForStuckTip(config) {
+async function detectNotSyncing(config) {
   if(!config.httpPort || !config.detect.notSyncing) {
     console.log("Skipping sync status checks");
     return;
@@ -28,4 +28,4 @@ async function checkForStuckTip(config) {
   }
   throw new Error("No sync progress in the past 5 minutes");
 }
-module.exports = checkForStuckTip;
+module.exports = detectNotSyncing;
