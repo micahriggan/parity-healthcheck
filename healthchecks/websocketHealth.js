@@ -35,7 +35,7 @@ async function checkWsHealth(config) {
     if(lastBlock) {
       console.log("WS Received block", lastBlock.number);
     }
-    await wait(8000);
+    await wait(60 * 1000);
   }
   throw new Error("No blocks over websocket subscription in the past 5 minutes");
 }

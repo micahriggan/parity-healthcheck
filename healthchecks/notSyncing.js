@@ -24,7 +24,7 @@ async function detectNotSyncing(config) {
       console.log("Progressed to height", tip);
       // we're progressing
     }
-    await wait(8000);
+    await wait(60 * 1000);
   }
   throw new Error("No sync progress in the past 5 minutes");
 }
