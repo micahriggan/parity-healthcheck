@@ -1,6 +1,8 @@
 //import Web3 from 'web3';
+const { exec } = require('child_process');
 const Web3 = require('web3');
 const utils = require('util');
+const asyncExec = utils.promisify(exec);
 const wait = utils.promisify(setTimeout);
 const config = require('./config');
 const healthChecks = require('./healthChecks');
@@ -12,6 +14,12 @@ if(!config) {
   process.exit(1);
 }
 
+async function runRestartCommand(command) {
+  try {
+    await asyncExec(command);
+  } catch(e) {}
+}
+
 async function main() {
   while(true) {
     try {
@@ -20,6 +28,7 @@ async function main() {
       if(config.restartOnIssue) {
         console.error(e);
         console.log("Issue detected, restarting parity");
+        await runRestartCommand(config.restartCommand);
       }
     }
     console.log("Healthchecks will resume in 5 minutes");

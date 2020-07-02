@@ -18,6 +18,7 @@ async function checkWsHealth(config) {
     await wait(1000);
     if(connectAttempts > 10) {
       console.error("Failed to connect to", wsUrl);
+      throw new Error("Connection attempted 10 times, and failed");
     }
   }
 
