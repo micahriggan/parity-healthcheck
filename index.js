@@ -3,6 +3,7 @@ const Web3 = require('web3');
 const utils = require('util');
 const wait = utils.promisify(setTimeout);
 const config = require('./config');
+const healthChecks = require('./healthChecks');
 const fiveMinutes = 1000 * 60 * 5;
 let lastRestart;
 
@@ -11,49 +12,10 @@ if(!config) {
   process.exit(1);
 }
 
-async function checkWsHealth() {
-  const wsUrl = `${config.wsProtocol}://${config.host}:${config.wsPort}`;
-  const web3 = new Web3(new Web3.providers.WebsocketProvider(wsUrl));
-  let timeStarted = Date.now();
-  let connectAttempts = 0;
-  while(!web3.currentProvider.connected) {
-    console.log("Connecting to", wsUrl);
-    connectAttempts++;
-    await wait(1000);
-    if(connectAttempts > 10) {
-      console.error("Failed to connect to", wsUrl);
-    }
-  }
-  console.log("Connected");
-
-  const blockSubscription = await web3.eth.subscribe('newBlockHeaders');
-  let lastBlock;
-  let lastSawTime = Date.now();
-  blockSubscription.subscribe((err, block) => {
-    lastBlock = block;
-    lastSawTime = Date.now();
-  });
-
-  while(Date.now() < lastSawTime + fiveMinutes) {
-    if(!lastBlock) {
-      console.log("Waiting for a block");
-    } else {
-      console.log("Last received block", lastBlock.number);
-    }
-    await wait(8000);
-  }
-  throw new Error("No blocks over websocket subscription in the past 5 minutes");
-}
-
 async function main() {
   while(true) {
-    let healthChecks = [];
-    if(config.wsPort && config.detect.websocketsStuck) {
-      healthChecks.push(checkWsHealth());
-    }
-
     try {
-      await Promise.all(healthChecks);
+      await Promise.all(healthChecks.map(check => check(config)));
     } catch(e) {
       if(config.restartOnIssue) {
         console.error(e);
