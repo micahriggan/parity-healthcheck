@@ -5,7 +5,7 @@ const utils = require('util');
 const asyncExec = utils.promisify(exec);
 const wait = utils.promisify(setTimeout);
 const config = require('./config');
-const healthChecks = require('./healthChecks');
+const healthChecks = require('./healthchecks');
 const fiveMinutes = 1000 * 60 * 5;
 let lastRestart;
 
