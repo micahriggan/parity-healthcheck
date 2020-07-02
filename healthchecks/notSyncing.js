@@ -21,7 +21,7 @@ async function detectNotSyncing(config) {
     if(newTip > tip) {
       tip = newTip;
       lastChanged = Date.now();
-      console.log("Progressed to height", tip);
+      console.log(new Date(), "Progressed to height", tip);
       // we're progressing
     }
     await wait(60 * 1000);

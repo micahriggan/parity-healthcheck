@@ -33,7 +33,7 @@ async function checkWsHealth(config) {
   console.log("Monitoring", wsUrl, "for websocket block emits");
   while(Date.now() < lastSawTime + fiveMinutes) {
     if(lastBlock) {
-      console.log("WS Received block", lastBlock.number);
+      console.log(new Date(), "WS Received block", lastBlock.number);
     }
     await wait(60 * 1000);
   }
