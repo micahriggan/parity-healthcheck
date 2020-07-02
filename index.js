@@ -47,7 +47,7 @@ async function checkWsHealth() {
 
 async function main() {
   let healthChecks = [];
-  if(config.wsPort) {
+  if(config.wsPort && config.detect.websocketsStuck) {
     healthChecks.push(checkWsHealth());
   }
 
