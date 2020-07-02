@@ -60,6 +60,7 @@ async function main() {
         console.log("Issue detected, restarting parity");
       }
     }
+    console.log("Healthchecks will resume in 5 minutes");
     await wait(fiveMinutes);
   }
 }
