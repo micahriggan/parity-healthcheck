@@ -37,6 +37,8 @@ async function checkWsHealth(config) {
     }
     await wait(60 * 1000);
   }
+  await web3.currentProvider.disconnect();
+  delete web3;
   throw new Error("No blocks over websocket subscription in the past 5 minutes");
 }
 
