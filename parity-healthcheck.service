@@ -1,0 +1,12 @@
+[Unit]
+Description=Parity Healthcheck
+
+[Service]
+Type=simple
+User=root
+Restart=always
+WorkingDirectory=/tmp
+ExecStart=/usr/bin/node parity-healthcheck/index.js
+
+[Install]
+WantedBy=default.target
