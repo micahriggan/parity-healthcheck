@@ -26,3 +26,6 @@ module.exports = {
 * ./register-service
 * sudo vim /etc/systemd/system/parity-healthcheck.service
 * set ExecStart path for parity-healthcheck/index.js 
+* sudo systemctl daemon-reload
+* cp config.example.js config.js
+* sudo service parity-healthcheck start
