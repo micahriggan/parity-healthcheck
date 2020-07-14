@@ -19,3 +19,10 @@ module.exports = {
   }
 };
 ```
+
+# Setup
+* Clone repo
+* `npm install`
+* ./register-service
+* sudo vim /etc/systemd/system/parity-healthcheck.service
+* set ExecStart path for parity-healthcheck/index.js 
