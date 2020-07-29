@@ -17,7 +17,9 @@ if(!config) {
 async function runRestartCommand(command) {
   try {
     await asyncExec(command);
-  } catch(e) {}
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 async function main() {
@@ -36,4 +38,11 @@ async function main() {
   }
 }
 
-main();
+if(require.main === module) {
+  main();
+}
+
+module.exports = {
+  checkHealth: main,
+  runRestartCommand: () => runRestartCommand(config.restartCommand)
+}
