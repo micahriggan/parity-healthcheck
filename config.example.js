@@ -1,6 +1,6 @@
 module.exports = {
   restartOnIssue: true,
-  restartCommand: "killall parity2.4.2 && killall stunnel4",
+  restartCommand: "service parity restart && service stunnel4 restart",
   host: 'localhost',
   httpPort: 8545,
   wsPort: 8546,
